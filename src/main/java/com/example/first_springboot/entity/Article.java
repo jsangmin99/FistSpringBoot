@@ -1,6 +1,7 @@
 package com.example.first_springboot.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -13,16 +14,14 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor//디폴트 생성자
 @ToString
+@Getter
 public class Article {
     @Id // 대표값을 지정!
     @GeneratedValue //자동생성 어노테이션
     private Long id;
-
     @Column
     private String title;
     @Column
     private String content;
-
-
 
 }
