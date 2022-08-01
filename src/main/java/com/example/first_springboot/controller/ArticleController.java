@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -71,6 +72,45 @@ public class ArticleController {
 
         //뷰 페이지 설정
         return "articles/edit";
+    }
+
+    @PostMapping("/articles/update")
+    public String update(ArticleForm form){
+        log.info(form.toString());
+
+        //1.DTO 를 엔티티로 변환
+        Article articleEntity = form.toEntity();
+        log.info(articleEntity.toString());
+
+        //2. 엔티티를 DB로 저장 한다.
+        //2-1 DB에서 기존 데이터를 가져온다
+        Article target = articleRepository.findById(articleEntity.getId()).orElse(null);
+
+        //2-1 DB에서 기존데이터가 있다면 값을 갱신한다.
+        if(target != null){
+            articleRepository.save(articleEntity);
+        }
+        //3. 수정 셜과 페이지로 리다이렉트 한다.
+
+        return "redirect:/articles/"+ articleEntity.getId();
+
+    }
+
+    @GetMapping("/articles/{id}/delete")
+    public String delete(@PathVariable Long id, RedirectAttributes redi){
+        log.info("삭제 요청");
+
+        //1. 삭제 대상은 가져온다
+        Article target = articleRepository.findById(id).orElse(null);
+        log.info(target.toString());
+        //2. 대상을 삭제한다.
+        if (target != null){
+            articleRepository.delete(target);
+            redi.addFlashAttribute("msg", "삭제가 완료되었습니다.");
+        }
+
+        //결과 페이지를 요청한다.
+        return "redirect:/articles";
     }
 }
 

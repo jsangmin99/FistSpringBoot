@@ -10,7 +10,7 @@
 
     <title>Hello, world!</title>
 </head>
-<body>
+<div>
 <!-- navigation-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
@@ -48,3 +48,10 @@
         </div>
     </div>
 </nav>
+<!-- alert 메시지 -->
+    {{#msg}}
+<div class="alert alert-primary alert-dismissable">
+    {{msg}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+    {{/msg}}
