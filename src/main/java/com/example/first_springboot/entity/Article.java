@@ -21,12 +21,15 @@ public class Article {
     @Column
     private String content;
 
-    public void patch(Article article) {
+    public boolean patch(Article article) {
         if(article.title != null){
             this.title=article.title;
+            return true;
         }
         if (article.content != null){
             this.content = article.content;
+            return true;
         }
+        return false;
     }
 }

@@ -49,7 +49,10 @@ public class ArticleService {
             return null;
         }
         //4. 업데이트 및 정상응답(200)
-        target.patch(article);
+        if(!target.patch(article)){
+            log.info("request info null exeption");
+            return null;
+        }
         Article updated = articleRepository.save(target);
         return updated;
     }

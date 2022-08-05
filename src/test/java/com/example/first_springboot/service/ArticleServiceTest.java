@@ -2,6 +2,7 @@ package com.example.first_springboot.service;
 
 import com.example.first_springboot.dto.ArticleForm;
 import com.example.first_springboot.entity.Article;
+import com.example.first_springboot.repository.ArticleRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -92,31 +93,90 @@ class ArticleServiceTest {
     }
 
     @Test
-    void update_성공() {
+    void update_성공_존재하는id_title_content가_있는_dto입력 () {
 
         //에상
-        String title ="라라라";
-        String content = "4444";
-        ArticleForm dto = new ArticleForm(null,title,content);
-        Article expected = new Article(4L,title,content);
+        String title ="갸갸갸";
+        String content = "1111";
+        ArticleForm dto = new ArticleForm(1L,title,content);
+        Article expected = new Article(1L,title,content);
 
         //실제
-        Article article = articleService.create(dto);
+        Article article = articleService.update(1L, dto);
 
         //비교
         assertEquals(expected.toString(), article.toString());
     }
+
+    @Test////////////////////////// content의 값
+    void update_성공_존재하는id_title_있는_dto입력 () {
+
+        //에상
+        String title ="갸갸갸";
+        String content = null;
+        ArticleForm dto = new ArticleForm(1L,title,content);
+        Article expected = new Article(1L,title,"1111");//content 부분을 기존걸 가져오고 싶다~~
+
+        //실제
+        Article article = articleService.update(1L, dto);
+
+        //비교
+        assertEquals(expected.toString(), article.toString());
+    }
+
     @Test
     void update_실패_존재하지않는id() {
-    }
-    @Test
-    void update_실패_id만_있는dto() {
-    }
-    @Test
-    void delete_성공() {
+        //예상
+        Long id = -1L;
+        String title = "라라라";
+        String content = "4444";
+        ArticleForm dto = new ArticleForm(id,title, content);
+        Article expected = null;
+
+        //실제
+        Article article = articleService.update(-1L,dto);
+        //비교
+        assertEquals(expected, article);
 
     }
     @Test
-    void delete_성공_존재하지않는id입력() {
+    void update_실패_id만_있는dto() { //실제값이 null로 반환해야하는데 기존값을 그대로 가져오는 문제!!!
+        Long id =1L;
+        String title = null;
+        String content = null;
+        //예상
+        ArticleForm dto = new ArticleForm(id,title, content);
+        Article expected = null;
+
+        //실제
+        Article article = articleService.update(1L,dto);
+        //비교
+        assertEquals(expected, article);
+
+    }
+    @Test
+    @Transactional
+    void delete_성공_존재하는id입력() {
+        Long id = 2L;
+        //예상
+        Article expected = null;
+
+        //실제
+        articleService.delete(id);
+        Article article = articleService.show(id);
+        //비교
+        assertEquals(expected,article);
+
+    }
+    @Test
+    void delete_실패_존재하지않는id입력() {
+        Long id = -1L;
+        //예상
+        Article expected = null;
+
+        //실제
+        Article article = articleService.delete(id);
+        //비교
+        assertEquals(expected,article);
     }
 }
