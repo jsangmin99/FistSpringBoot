@@ -10,6 +10,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
                     "FROM comment " +
                     "WHERE article_id = :articleId",
             nativeQuery = true)
-    List<Comment> findByArticleId(Long articleId);
+    List<Comment> findByArticleId( Long articleId);
     List<Comment> findByNickname(String nickname);
 }
